@@ -1,52 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tanvir Vaiyar Patshala | Elite Edition</title>
-    <link rel="stylesheet" href="style.css">
+    <title>তানভীর ভাইয়ার পাঠশালা</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #0b0e14; color: #00f2ff; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: #1a1f29; padding: 30px; border-radius: 20px; box-shadow: 0 0 20px rgba(0,242,255,0.2); }
+        input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #00f2ff; border-radius: 8px; background: #0b0e14; color: white; }
+        button { background: #00f2ff; color: #000; border: none; padding: 15px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
+        video { width: 100%; border-radius: 15px; border: 2px solid #00f2ff; margin-top: 20px; background: #000; }
+        #remote-video { border-color: #ff00ff; }
+    </style>
 </head>
 <body>
-    <div id="intro">
-        <h1 class="glitch" data-text="TANVIR VAIYAR PATSHALA">TANVIR VAIYAR PATSHALA</h1>
-        <p class="subtitle">Created by Yuvraj</p>
+
+    <div class="container" id="login-box">
+        <h1>🎓 পাঠশালা লাইভ</h1>
+        <p>Created by Yuvraj</p>
+        <input type="text" id="room-id" placeholder="রুম আইডি (যেমন: math123)">
+        <button onclick="startCall()">ক্লাস শুরু করুন</button>
     </div>
 
-    <div id="login-container" class="hidden">
-        <div class="auth-card">
-            <h2><i class="fas fa-user-shield"></i> SECURE ACCESS</h2>
-            <input type="text" id="room-id" placeholder="Room ID (e.g. Physics101)">
-            <input type="password" id="room-pass" placeholder="Password">
-            <input type="text" id="user-name" placeholder="Your Name">
-            <button onclick="startSession()" class="glow-btn">ENTER PATSHALA</button>
-        </div>
+    <div id="video-section" style="display:none;">
+        <h3>আপনার ভিডিও</h3>
+        <video id="local-video" autoplay muted playsinline></video>
+        <h3>ভাইয়ার ভিডিও</h3>
+        <div id="remote-video-container"></div>
     </div>
 
-    <div id="classroom" class="hidden">
-        <div class="top-bar">
-            <div class="logo">TVP <span>ELITE</span></div>
-            <div id="room-info">Room: <span id="display-room"></span></div>
-        </div>
-        
-        <div class="video-grid" id="video-grid">
-            <div class="video-wrapper self">
-                <video id="local-video" autoplay muted></video>
-                <div class="label">You (Host)</div>
-            </div>
-        </div>
+    <script>
+        let localStream;
+        let peer;
 
-        <div class="dock">
-            <button class="icon-btn" onclick="toggleMic()"><i class="fas fa-microphone" id="mic-icon"></i></button>
-            <button class="icon-btn" onclick="toggleCam()"><i class="fas fa-video" id="cam-icon"></i></button>
-            <button class="icon-btn accent" onclick="shareScreen()"><i class="fas fa-desktop"></i></button>
-            <button class="icon-btn record" onclick="toggleRecord()" id="rec-btn"><i class="fas fa-circle"></i></button>
-            <button class="icon-btn danger" onclick="leaveClass()"><i class="fas fa-phone-slash"></i></button>
-        </div>
-    </div>
+        async function startCall() {
+            const roomId = document.getElementById('room-id').value;
+            if (!roomId) return alert("দয়া করে একটি আইডি দিন");
 
-    <script src="script.js"></script>
+            try {
+                // ক্যামেরা ও মাইক্রোফোন পারমিশন নেওয়া
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                document.getElementById('local-video').srcObject = localStream;
+                
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('video-section').style.display = 'block';
+
+                // PeerJS কানেকশন শুরু
+                peer = new Peer(roomId);
+
+                peer.on('open', (id) => {
+                    alert("আপনি এখন লাইভ! ভাইয়াকে বলুন এই আইডি দিয়ে জয়েন করতে: " + id);
+                });
+
+                // কল রিসিভ করা
+                peer.on('call', (call) => {
+                    call.answer(localStream);
+                    call.on('stream', (remoteStream) => {
+                        addRemoteVideo(remoteStream);
+                    });
+                });
+
+            } catch (err) {
+                alert("ক্যামেরা অন করা যাচ্ছে না। দয়া করে ব্রাউজারে পারমিশন দিন।");
+                console.error(err);
+            }
+        }
+
+        function addRemoteVideo(stream) {
+            if (document.getElementById('remote-video')) return;
+            const video = document.createElement('video');
+            video.id = 'remote-video';
+            video.srcObject = stream;
+            video.autoplay = true;
+            video.playsinline = true;
+            document.getElementById('remote-video-container').append(video);
+        }
+    </script>
 </body>
 </html>
