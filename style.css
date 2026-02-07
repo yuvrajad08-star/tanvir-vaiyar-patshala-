@@ -1,0 +1,23 @@
+:root { --neon: #00f2ff; --bg: #050505; --glass: rgba(255, 255, 255, 0.05); }
+body { background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; margin: 0; overflow: hidden; }
+.hidden { display: none !important; }
+
+/* Intro Glitch Effect */
+#intro { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; position: fixed; width: 100%; z-index: 999; }
+.glitch { font-family: 'Orbitron', sans-serif; font-size: 3rem; color: var(--neon); text-shadow: 0 0 20px var(--neon); animation: pulse 2s infinite; }
+.subtitle { color: #888; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px; }
+
+/* Auth Card */
+.auth-card { background: var(--glass); backdrop-filter: blur(20px); padding: 40px; border-radius: 30px; border: 1px solid rgba(0,242,255,0.3); text-align: center; width: 320px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+input { width: 100%; padding: 12px; margin: 10px 0; background: rgba(0,0,0,0.5); border: 1px solid #333; border-radius: 10px; color: #fff; outline: none; }
+.glow-btn { width: 100%; padding: 15px; background: var(--neon); color: #000; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0,242,255,0.4); }
+
+/* Classroom UI */
+.top-bar { padding: 20px; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; height: 70vh; }
+.video-wrapper { background: #111; border-radius: 20px; overflow: hidden; position: relative; border: 1px solid #222; }
+video { width: 100%; height: 100%; object-fit: cover; }
+.dock { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; background: rgba(0,0,0,0.8); padding: 15px 30px; border-radius: 50px; border: 1px solid var(--neon); }
+.icon-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: #222; color: #fff; cursor: pointer; font-size: 1.2rem; }
+.icon-btn.accent { background: var(--neon); color: #000; }
+.icon-btn.danger { background: #ff3b3b; }

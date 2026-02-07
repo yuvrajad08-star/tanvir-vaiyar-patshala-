@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanvir Vaiyar Patshala | Elite Edition</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="intro">
+        <h1 class="glitch" data-text="TANVIR VAIYAR PATSHALA">TANVIR VAIYAR PATSHALA</h1>
+        <p class="subtitle">Created by Yuvraj</p>
+    </div>
+
+    <div id="login-container" class="hidden">
+        <div class="auth-card">
+            <h2><i class="fas fa-user-shield"></i> SECURE ACCESS</h2>
+            <input type="text" id="room-id" placeholder="Room ID (e.g. Physics101)">
+            <input type="password" id="room-pass" placeholder="Password">
+            <input type="text" id="user-name" placeholder="Your Name">
+            <button onclick="startSession()" class="glow-btn">ENTER PATSHALA</button>
+        </div>
+    </div>
+
+    <div id="classroom" class="hidden">
+        <div class="top-bar">
+            <div class="logo">TVP <span>ELITE</span></div>
+            <div id="room-info">Room: <span id="display-room"></span></div>
+        </div>
+        
+        <div class="video-grid" id="video-grid">
+            <div class="video-wrapper self">
+                <video id="local-video" autoplay muted></video>
+                <div class="label">You (Host)</div>
+            </div>
+        </div>
+
+        <div class="dock">
+            <button class="icon-btn" onclick="toggleMic()"><i class="fas fa-microphone" id="mic-icon"></i></button>
+            <button class="icon-btn" onclick="toggleCam()"><i class="fas fa-video" id="cam-icon"></i></button>
+            <button class="icon-btn accent" onclick="shareScreen()"><i class="fas fa-desktop"></i></button>
+            <button class="icon-btn record" onclick="toggleRecord()" id="rec-btn"><i class="fas fa-circle"></i></button>
+            <button class="icon-btn danger" onclick="leaveClass()"><i class="fas fa-phone-slash"></i></button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
